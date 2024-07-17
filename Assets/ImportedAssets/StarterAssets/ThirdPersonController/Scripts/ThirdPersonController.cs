@@ -156,6 +156,21 @@ using UnityEngine.InputSystem;
             JumpAndGravity();
             GroundedCheck();
             Move();
+            //checkAnimationRootMotion("Attack3");
+        }
+        public void checkAnimationRootMotion(string AnimName)
+        {
+            AnimatorStateInfo stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+        Debug.Log(stateInfo.IsName(AnimName));
+            // 특정 애니메이션 상태에 root motion을 적용
+            if (stateInfo.IsName(AnimName))
+            {
+                _animator.applyRootMotion = true;
+            }
+            else
+            {
+                _animator.applyRootMotion = false;
+            }
         }
 
         private void LateUpdate()
@@ -207,12 +222,11 @@ using UnityEngine.InputSystem;
             CinemachineCameraTarget.transform.rotation = Quaternion.Euler(_cinemachineTargetPitch + CameraAngleOverride,
                 _cinemachineTargetYaw, 0.0f);
         }
-
-        private void Move()
+    private void Move()
         {
             // set target speed based on move speed, sprint speed and if sprint is pressed
             float targetSpeed = _input.sprint ? SprintSpeed : MoveSpeed;
-
+            
             // a simplistic acceleration and deceleration designed to be easy to remove, replace, or iterate upon
 
             // note: Vector2's == operator uses approximation so is not floating point error prone, and is cheaper than magnitude
@@ -224,7 +238,7 @@ using UnityEngine.InputSystem;
 
             float speedOffset = 0.1f;
             float inputMagnitude = _input.analogMovement ? _input.move.magnitude : 1f;
-
+            
             // accelerate or decelerate to target speed
             if (currentHorizontalSpeed < targetSpeed - speedOffset ||
                 currentHorizontalSpeed > targetSpeed + speedOffset)
@@ -267,7 +281,7 @@ using UnityEngine.InputSystem;
             // move the player
             _controller.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
                              new Vector3(0.0f, _verticalVelocity, 0.0f) * Time.deltaTime);
-            
+       
             // update animator if using character
             if (_hasAnimator)
             {
