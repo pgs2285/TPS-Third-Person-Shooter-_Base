@@ -156,7 +156,7 @@ using UnityEngine.InputSystem;
             JumpAndGravity();
             GroundedCheck();
             Move();
-            //checkAnimationRootMotion("Attack3");
+            checkAnimationRootMotion("Attack3");
         }
         public void checkAnimationRootMotion(string AnimName)
         {
